@@ -7,7 +7,7 @@ class BookItem extends React.Component {
             <li>
             <div className="book">
               <div className="book-top">
-                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.coverImage})` }}></div>
+                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.book.imageLinks.smallThumbnail})` }}></div>
                 <div className="book-shelf-changer">
                   <select>
                     <option value="move" disabled>Move to...</option>
@@ -18,8 +18,8 @@ class BookItem extends React.Component {
                   </select>
                 </div>
               </div>
-              <div className="book-title">{this.props.bookTitle}</div>
-              <div className="book-authors">{this.props.bookAuthors}</div>
+              <div className="book-title">{this.props.book.title}</div>
+              <div className="book-authors">{this.props.book.authors}</div>
             </div>
           </li>
         )
