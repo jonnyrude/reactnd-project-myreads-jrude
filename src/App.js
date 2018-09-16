@@ -1,22 +1,27 @@
 import React from 'react'
-// import * as BooksAPI from './BooksAPI'
+import { Route } from 'react-router-dom';
+import * as BooksAPI from './BooksAPI'
 import './App.css'
+import BookItem from './bookItem';
 
 class BooksApp extends React.Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    showSearchPage: false
+    // returns an array of book items currently on shelf
+    // BooksAPI.getAll().then((books) => console.log(books))
+
+    shelvedBooks: []
+  }
+
+  componentDidMount() {
+    BooksAPI.getAll().then((books) => this.setState({shelvedBooks: books}))
   }
 
   render() {
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
+
+        {/* SEARCH PAGE */}
+        <Route path="/search" render={() => (
           <div className="search-books">
             <div className="search-books-bar">
               <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
@@ -37,7 +42,10 @@ class BooksApp extends React.Component {
               <ol className="books-grid"></ol>
             </div>
           </div>
-        ) : (
+        )}/>
+
+        {/* MAIN PAGE */}
+        <Route path="/" render={()=> (
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
@@ -48,6 +56,16 @@ class BooksApp extends React.Component {
                   <h2 className="bookshelf-title">Currently Reading</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
+                      { this.state.shelvedBooks && this.state.shelvedBooks.map(book => (
+                         (book.shelf === 'currentlyReading' && (
+                          <BookItem
+                            coverImage={book.imageLinks.smallThumbnail}
+                            bookTitle={book.title}
+                            bookAuthor={book.authors}
+                            />
+                        ))
+                      ))}
+{/*
                       <li>
                         <div className="book">
                           <div className="book-top">
@@ -66,6 +84,7 @@ class BooksApp extends React.Component {
                           <div className="book-authors">Harper Lee</div>
                         </div>
                       </li>
+
                       <li>
                         <div className="book">
                           <div className="book-top">
@@ -83,7 +102,7 @@ class BooksApp extends React.Component {
                           <div className="book-title">Ender's Game</div>
                           <div className="book-authors">Orson Scott Card</div>
                         </div>
-                      </li>
+                      </li> */ }
                     </ol>
                   </div>
                 </div>
@@ -197,7 +216,8 @@ class BooksApp extends React.Component {
               <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
             </div>
           </div>
-        )}
+
+        )}/>
       </div>
     )
   }
