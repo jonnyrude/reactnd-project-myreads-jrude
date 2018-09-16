@@ -9,24 +9,47 @@ class BooksApp extends React.Component {
     // returns an array of book items currently on shelf
     // BooksAPI.getAll().then((books) => console.log(books))
 
-    shelvedBooks: []
+    // Array of book objects
+    shelvedBooks: [],
+
+    // Arrays of book id's on each shelf
+    currentlyReading : [],
+    wantToRead : [],
+    read : []
   }
 
   componentDidMount() {
-    BooksAPI.getAll().then((books) => this.setState({shelvedBooks: books}))
+    BooksAPI.getAll().then((books) => {
+      // new State refreshed with all books on a shelf
+      let updatedState = {
+        shelvedBooks: [],
+        currentlyReading: [],
+        wantToRead: [],
+        read: []
+      };
+      books.map((book) => {
+        updatedState.shelvedBooks.push(book);
+        updatedState[book.shelf].push(book.id);
+      })
+
+      this.setState(updatedState);
+    })
   }
 
-  changeShelf = (shelf, id) => {
-    // console.log(e, id);
-    BooksAPI.update({id}, shelf).then((value) => {
-      console.log(value);
-      this.setState((state) => {
-        state.shelvedBooks.map(offShelf => {
-          if (offShelf.id === id) {
-            offShelf.shelf = shelf;
-          }
-        })
-      })
+  changeShelf = (shelf, book) => {
+    console.log(shelf, book);
+    BooksAPI.update(book, shelf).then((shelves) => {
+      console.log(shelves);
+      this.setState( shelves ) // TODO: working?
+
+      // this.setState((state) => {
+      //   state.shelvedBooks.map(offShelf => {
+      //     if (offShelf.id === book.id) {
+      //       offShelf = book;
+      //     }
+      //   })
+      // })
+
     })
 
     // const theBook = this.state.shelvedBooks.find(offShelf => offShelf.id === book.id) || book;
@@ -74,7 +97,7 @@ class BooksApp extends React.Component {
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                       {this.state.shelvedBooks.map(book => (
-                         (book.shelf === 'currentlyReading' && (
+                         (this.state.currentlyReading.includes(book.id) && (
                           <BookItem book={book} move={this.changeShelf} key={book.id} />
                         ))
                       ))}
@@ -86,7 +109,7 @@ class BooksApp extends React.Component {
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                       {this.state.shelvedBooks.map(book =>
-                        (book.shelf === 'wantToRead' && (
+                        (this.state.wantToRead.includes(book.id) && (
                           <BookItem book={book} move={this.changeShelf} key={book.id}/>
                         ))
                       )}
@@ -98,7 +121,7 @@ class BooksApp extends React.Component {
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                       {this.state.shelvedBooks.map(book =>
-                        (book.shelf === 'read' && (
+                        (this.state.read.includes(book.id) && (
                           <BookItem book={book} move={this.changeShelf} key={book.id}/>
                         ))
                       )}
