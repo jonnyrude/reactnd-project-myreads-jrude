@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Route } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI'
 import './App.css'
@@ -14,6 +14,23 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => this.setState({shelvedBooks: books}))
+  }
+
+  changeShelf = (shelf, id) => {
+    // console.log(e, id);
+    BooksAPI.update({id}, shelf).then((value) => {
+      console.log(value);
+      this.setState((state) => {
+        state.shelvedBooks.map(offShelf => {
+          if (offShelf.id === id) {
+            offShelf.shelf = shelf;
+          }
+        })
+      })
+    })
+
+    // const theBook = this.state.shelvedBooks.find(offShelf => offShelf.id === book.id) || book;
+
   }
 
   render() {
@@ -58,7 +75,7 @@ class BooksApp extends React.Component {
                     <ol className="books-grid">
                       {this.state.shelvedBooks.map(book => (
                          (book.shelf === 'currentlyReading' && (
-                          <BookItem book={book} />
+                          <BookItem book={book} move={this.changeShelf} key={book.id} />
                         ))
                       ))}
                     </ol>
@@ -70,7 +87,7 @@ class BooksApp extends React.Component {
                     <ol className="books-grid">
                       {this.state.shelvedBooks.map(book =>
                         (book.shelf === 'wantToRead' && (
-                          <BookItem book={book} />
+                          <BookItem book={book} move={this.changeShelf} key={book.id}/>
                         ))
                       )}
                     </ol>
@@ -82,7 +99,7 @@ class BooksApp extends React.Component {
                     <ol className="books-grid">
                       {this.state.shelvedBooks.map(book =>
                         (book.shelf === 'read' && (
-                          <BookItem book={book} />
+                          <BookItem book={book} move={this.changeShelf} key={book.id}/>
                         ))
                       )}
                     </ol>
