@@ -38,17 +38,21 @@ class BooksApp extends React.Component {
 
   changeShelf = (shelf, book) => {
     console.log(shelf, book);
+    // Make request to change on server
     BooksAPI.update(book, shelf).then((shelves) => {
-      console.log(shelves);
-      this.setState( shelves ) // TODO: working?
 
-      // this.setState((state) => {
-      //   state.shelvedBooks.map(offShelf => {
-      //     if (offShelf.id === book.id) {
-      //       offShelf = book;
-      //     }
-      //   })
-      // })
+      // update state to reflect book's new shelf
+      this.setState((state) => {
+        state.shelvedBooks.map(offShelf => {
+          if (offShelf.id === book.id) {
+            offShelf.shelf = shelf;
+          }
+        })
+      })
+
+      // API request returned updated shelves, so replace local state
+      //console.log(shelves);
+      this.setState( shelves )
 
     })
 
