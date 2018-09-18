@@ -73,7 +73,9 @@ class BooksApp extends React.Component {
 
         {/* SEARCH PAGE */}
         <Route path="/search" render={() => (
-          <SearchPage />
+          <SearchPage
+            move={this.changeShelf}
+          />
         )}/>
 
         {/* MAIN PAGE */}
