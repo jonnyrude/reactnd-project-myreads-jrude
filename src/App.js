@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI'
-import './App.css'
-import BookItem from './bookItem';
+import './App.css';
+import BookShelf from './bookShelf';
 
 class BooksApp extends React.Component {
   state = {
@@ -60,6 +60,12 @@ class BooksApp extends React.Component {
 
   }
 
+  getBook = (getID) => {
+    return this.state.shelvedBooks.find(book => {
+        return book.id === getID
+      })
+  }
+
   render() {
     return (
       <div className="app">
@@ -96,42 +102,25 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      {this.state.shelvedBooks.map(book => (
-                         (this.state.currentlyReading.includes(book.id) && (
-                          <BookItem book={book} move={this.changeShelf} key={book.id} />
-                        ))
-                      ))}
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      {this.state.shelvedBooks.map(book =>
-                        (this.state.wantToRead.includes(book.id) && (
-                          <BookItem book={book} move={this.changeShelf} key={book.id}/>
-                        ))
-                      )}
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      {this.state.shelvedBooks.map(book =>
-                        (this.state.read.includes(book.id) && (
-                          <BookItem book={book} move={this.changeShelf} key={book.id}/>
-                        ))
-                      )}
-                    </ol>
-                  </div>
-                </div>
+                <BookShelf
+                  shelfName='Currently Reading'
+                  idsOnShelf={this.state.currentlyReading}
+                  getBook={this.getBook}
+                  move={this.changeShelf}
+                />
+
+                <BookShelf
+                  shelfName='Want to Read'
+                  idsOnShelf={this.state.wantToRead}
+                  getBook={this.getBook}
+                  move={this.changeShelf}
+                />
+                <BookShelf
+                  shelfName='Read'
+                  idsOnShelf={this.state.read}
+                  getBook={this.getBook}
+                  move={this.changeShelf}
+                />
               </div>
             </div>
             <div className="open-search">
