@@ -20,13 +20,16 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
+    this.refreshBooks();
+  }
+
+
+  refreshBooks = () => {
     BooksAPI.getAll().then((books) => {
       // new State refreshed with all books on a shelf
       let updatedState = {
-        shelvedBooks: [],
-        currentlyReading: [],
-        wantToRead: [],
-        read: []
+        shelvedBooks: [], currentlyReading: [],
+        wantToRead: [],   read: []
       };
       books.map((book) => {
         updatedState.shelvedBooks.push(book);
@@ -38,10 +41,9 @@ class BooksApp extends React.Component {
   }
 
   changeShelf = (shelf, book) => {
-    console.log(shelf, book);
+    // console.log(shelf, book);
     // Make request to change on server
     BooksAPI.update(book, shelf).then((shelves) => {
-
       // update state to reflect book's new shelf
       this.setState((state) => {
         state.shelvedBooks.map(offShelf => {
@@ -52,19 +54,21 @@ class BooksApp extends React.Component {
       })
 
       // API request returned updated shelves, so replace local state
-      //console.log(shelves);
+      console.log(shelves);
       this.setState( shelves )
 
     })
-
-    // const theBook = this.state.shelvedBooks.find(offShelf => offShelf.id === book.id) || book;
-
   }
 
   getBook = (getID) => {
     return this.state.shelvedBooks.find(book => {
         return book.id === getID
       })
+  }
+
+  addBook = (shelf, book) => {
+    this.changeShelf(shelf, book);
+    this.refreshBooks();
   }
 
   render() {
@@ -74,7 +78,7 @@ class BooksApp extends React.Component {
         {/* SEARCH PAGE */}
         <Route path="/search" render={() => (
           <SearchPage
-            move={this.changeShelf}
+            add={this.addBook}
           />
         )}/>
 
