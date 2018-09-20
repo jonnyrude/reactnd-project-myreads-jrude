@@ -79,6 +79,9 @@ class BooksApp extends React.Component {
         <Route path="/search" render={() => (
           <SearchPage
             add={this.addBook}
+            myReadingShelf={this.state.currentlyReading}
+            myWantedShelf={this.state.wantToRead}
+            myReadShelf={this.state.read}
           />
         )}/>
 

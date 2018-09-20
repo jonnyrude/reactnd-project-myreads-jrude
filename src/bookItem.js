@@ -3,14 +3,17 @@ import React from 'react'
 
 
 class BookItem extends React.Component {
+
+
+
     render() {
         return (
             <li>
             <div className="book">
               <div className="book-top">
-                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.book.imageLinks.smallThumbnail})` }}></div>
+                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.book.imageLinks ? this.props.book.imageLinks.smallThumbnail : ''})` }}></div>
                 <div className="book-shelf-changer">
-                  <select defaultValue={this.props.book.shelf} onChange={(e) => this.props.move(e.target.value, this.props.book)}>
+                  <select defaultValue={this.props.book.shelf || 'none'} onChange={(e) => this.props.move(e.target.value, this.props.book)}>
                     <option value="move" disabled>Move to...</option>
                     <option value="currentlyReading">Currently Reading</option>
                     <option value="wantToRead">Want to Read</option>

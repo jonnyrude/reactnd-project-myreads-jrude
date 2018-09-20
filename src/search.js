@@ -12,7 +12,16 @@ class SearchPage extends React.Component {
         BooksAPI.search(string).then((results) => {
             // console.log(results);
             if (results && !results.error) {
-                let idsOnShelf = results.map(book => book.id);
+                let idsOnShelf = results.map(book => {
+                    if (this.props.myReadingShelf.includes(book.id) ) {
+                        book.shelf = 'currentlyReading';
+                    } else if (this.props.myWantedShelf.includes(book.id)) {
+                        book.shelf = 'wantToRead';
+                    } else if (this.props.myReadShelf.includes(book.id)) {
+                        book.shelf = 'read';
+                    }
+                    return book.id
+                });
                 this.setState({searchResults: results,
                     searchIDs: idsOnShelf});
             } else {
