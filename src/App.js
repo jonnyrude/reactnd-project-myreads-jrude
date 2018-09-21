@@ -41,10 +41,11 @@ class BooksApp extends React.Component {
       };
 
       // fill updatedState with refreshed books
-      books.map((book) => {
+      //books.map((book) => {
+        for (const book of books) {
         updatedState.shelvedBooks.push(book);
         updatedState[book.shelf].push(book.id);
-      })
+      }
 
       // finally, replace state
       this.setState(updatedState);
@@ -61,11 +62,12 @@ class BooksApp extends React.Component {
 
       // update state of App to reflect the change
       this.setState((state) => {
-        state.shelvedBooks.map(offShelf => {
+        //state.shelvedBooks.map(offShelf => {
+        for (const offShelf of state.shelvedBooks) {
           if (offShelf.id === book.id) {
             offShelf.shelf = shelf;
           }
-        })
+        }
       })
 
       // API request ((above) returns updated shelves, so
@@ -122,6 +124,7 @@ class BooksApp extends React.Component {
                   idsOnShelf={this.state[shelf.propName]}
                   getBook={this.getBook}
                   move={this.changeShelf}
+                  key={shelf.propName}
                 />
                 })}
               </div>
