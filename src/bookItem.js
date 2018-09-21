@@ -1,10 +1,14 @@
 import React from 'react'
 
-
-
+/**
+ * BookItem Component
+ *
+ * Used by BookShelf Components and Search Component
+ * to display book objects
+ *
+ * props.book = a book object
+ */
 class BookItem extends React.Component {
-
-
 
     render() {
         return (

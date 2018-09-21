@@ -1,14 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI';
-import BookItem from './bookItem';
 import BookShelf from './bookShelf'
 
+/**
+ * SearchPage Component
+ *
+ * Allows search for new books, and to add books to shelf
+ * on main app page
+ *
+ * props.myReadingShelf = Array of book.id's on the myReadingShelf
+ * props.myWantedShel = Array of book.id's on the WantToRead shelf
+ * props.myReadShelf = Array of book.id's on the read shelf
+ * props.add = function to add book to shelves (App's addBook function)
+ */
 
 class SearchPage extends React.Component {
 
-    searchFunc = (string) => {
+    state = { searchResults: [],
+        searchIDs: []
+     }
 
+     findBook = (id) => {
+
+        return this.state.searchResults.find(book => {
+            return book.id === id
+        })
+    }
+
+    searchFunc = (string) => {
         BooksAPI.search(string).then((results) => {
             // console.log(results);
             if (results && !results.error) {
@@ -29,20 +49,6 @@ class SearchPage extends React.Component {
             }
         })
     }
-
-    state = { searchResults: [],
-        searchIDs: []
-     }
-
-    findBook = (id) => {
-
-        return this.state.searchResults.find(book => {
-            return book.id === id
-        })
-    }
-
-
-    // TODO: Onstatechange - create array of book id's to pass to shelf
 
     render() {
         return (
@@ -66,31 +72,7 @@ class SearchPage extends React.Component {
                             move={(shelf, book) => this.props.add(shelf, book)}
                         />)
                         }
-
-                        {/*this.state.searchResults && this.state.searchResults.map( book =>
-                            <BookItem
-                                book={book}
-                                key={book.id}
-                                move={(shelf, book) => this.props.move(shelf, book)}
-                            />
-                        )
-                        */}
-                        {/* TODO:   1. Handle missing images
-                                    2. & authors
-                                    3. Place these results in a shelf names Search Results (get the grid :)*/}
-                        {/*
-                        NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                        You can find these search terms here:
-                        https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                        However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                        you don't find a specific author or title. Every search is limited by search terms.
-                        */}
                     </div>
-                </div>
-
-                <div className="search-books-results">
-                <ol className="books-grid"></ol>
                 </div>
             </div>
         )
