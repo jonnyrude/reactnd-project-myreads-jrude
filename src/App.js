@@ -16,7 +16,8 @@ class BooksApp extends React.Component {
     shelfNames : [
       {name: 'Currently Reading', propName: 'currentlyReading'},
       {name: 'Want to Read', propName:'wantToRead'},
-      {name:'Read', propName: 'read'}]
+      {name:'Read', propName: 'read'}
+    ]
   }
 
   /**
@@ -27,7 +28,7 @@ class BooksApp extends React.Component {
   }
 
   /**
-   * Logic to collect book objects from BooksAPI
+   * Logic to collect books from BooksAPI
    */
   refreshBooks = () => {
     // Request new books
