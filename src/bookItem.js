@@ -10,6 +10,33 @@ import React from 'react';
  */
 class BookItem extends React.Component {
 
+
+  /**
+   * @description creates HTML (JSX) for authors (handles varied input)
+   * @param {array} authors - Array of 1-3 authors, or undefined
+   * @returns {string} jsx/html for BookItem component
+   */
+  formatAuthors = (authors) => {
+    let authorsString = '';
+
+    if (authors) {
+      const len = authors.length;
+
+      for (let i = len -1; i >= 0; i--) {
+        if (i === len - 1) {
+          authorsString += authors[i];
+        }
+        else if (i === len - 2 ) {
+          authorsString = `${authors[i]} & ${authorsString}`;
+        } else {
+          authorsString = `${authors[i]}, ${authorsString}`;
+        }
+      }
+    }
+
+    return <div key={authors} className="book-authors">{authorsString}</div>
+  }
+
   render() {
     return (
       <li>
@@ -27,12 +54,8 @@ class BookItem extends React.Component {
             </div>
           </div>
           <div className="book-title">{this.props.book.title}</div>
-          {/* Work in progress */}
-          {this.props.book.authors && this.props.book.authors.map((author, index) => {
-            return <div key={author} className="book-authors">
-              {author && this.props.book.authors.length === 2 && index === 0 ? `${author} and` : author}
-            </div>
-          })}
+          {/* Use formatAuthors method to format */}
+          {this.formatAuthors(this.props.book.authors)}
         </div>
       </li>
     )
