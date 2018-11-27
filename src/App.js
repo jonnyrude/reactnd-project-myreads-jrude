@@ -1,4 +1,6 @@
 import React from 'react';
+import { Router } from 'react-router';
+import createBrowserHistory from 'history/createBrowserHistory';
 import { Route, Link } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
@@ -97,46 +99,51 @@ class BooksApp extends React.Component {
   }
 
   render() {
+    const history = createBrowserHistory();
+
     return (
-      <div className="app">
+      <Router history={history}>
 
-        {/* SEARCH PAGE */}
-        <Route path="/search" render={() => (
-          <SearchPage
-            add={this.addBook}
-            myReadingShelf={this.state.currentlyReading}
-            myWantedShelf={this.state.wantToRead}
-            myReadShelf={this.state.read}
-          />
-        )}/>
+        <div className="app">
 
-        {/* MAIN PAGE */}
-        <Route path="/" exact render={()=> (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
+          {/* SEARCH PAGE */}
+          <Route path="/search" render={() => (
+            <SearchPage
+              add={this.addBook}
+              myReadingShelf={this.state.currentlyReading}
+              myWantedShelf={this.state.wantToRead}
+              myReadShelf={this.state.read}
+            />
+          )}/>
 
-                {this.state.shelfNames.map(shelf => {
-                  return <BookShelf
-                  shelfName={shelf.name}
-                  idsOnShelf={this.state[shelf.propName]}
-                  getBook={this.getBook}
-                  move={this.changeShelf}
-                  key={shelf.propName}
-                />
-                })}
+          {/* MAIN PAGE */}
+          <Route path="/" exact render={()=> (
+            <div className="list-books">
+              <div className="list-books-title">
+                <h1>MyReads</h1>
+              </div>
+              <div className="list-books-content">
+                <div>
+
+                  {this.state.shelfNames.map(shelf => {
+                    return <BookShelf
+                    shelfName={shelf.name}
+                    idsOnShelf={this.state[shelf.propName]}
+                    getBook={this.getBook}
+                    move={this.changeShelf}
+                    key={shelf.propName}
+                  />
+                  })}
+                </div>
+              </div>
+              <div className="open-search">
+                <Link to="/search">Add a book</Link>
               </div>
             </div>
-            <div className="open-search">
-              <Link to="/search">Add a book</Link>
-            </div>
-          </div>
-        )}/>
+          )}/>
 
-      </div>
+        </div>
+      </Router>
     )
   }
 }
