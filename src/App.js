@@ -1,6 +1,4 @@
 import React from 'react';
-import { Router } from 'react-router';
-import createBrowserHistory from 'history/createBrowserHistory';
 import { Route, Link } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
@@ -99,15 +97,12 @@ class BooksApp extends React.Component {
   }
 
   render() {
-    const history = createBrowserHistory();
-
     return (
-      <Router history={history}>
 
         <div className="app">
 
           {/* SEARCH PAGE */}
-          <Route path="/search" render={() => (
+          <Route path="/search" exact render={() => (
             <SearchPage
               add={this.addBook}
               myReadingShelf={this.state.currentlyReading}
@@ -143,7 +138,6 @@ class BooksApp extends React.Component {
           )}/>
 
         </div>
-      </Router>
     )
   }
 }
