@@ -7,7 +7,9 @@ MyReads is a simple single page web application built with React. It consists of
 The second part of the application is the search page. This is where you add more books to your shelves. Typing in a query will display some results, and you can add them to your shelves. These results are displayed from a limited cache, and search queries are limited.
 
 ## To Run this App:
+You can [view this project online here.](https://jonnyrude.github.io/reactnd-project-myreads-jrude/).
 
+To run this project locally on your machine:
 * Clone or download the project, and `cd` into the root folder
 * install all project dependencies by running `npm install` (only need to do this once)
 * start the development server with `npm start` (this start a local server and open a web browser tab to the project)
